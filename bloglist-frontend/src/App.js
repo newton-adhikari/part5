@@ -3,6 +3,7 @@ import Blog from './components/Blog/Blog';
 import blogService from './services/blogs';
 import loginService from "./services/login";
 import NewBlog from "./components/NewBlog/NewBlog";
+import Notification from "./components/Notification/Notification";
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
@@ -12,6 +13,7 @@ const App = () => {
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [url, setUrl] = useState("");
+  const [message, setMessage] = useState(null);
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -40,8 +42,12 @@ const App = () => {
       setUsernaem("");
       setPassword("");
     }
-    catch(e) {
-      console.log(e.response.data);
+    catch(err) {
+      const msg = err.response.data;
+      setMessage({text: msg, error: true});
+      setTimeout(() => {
+        setMessage(null);
+      }, 5000)
     }
   }
 
@@ -50,6 +56,13 @@ const App = () => {
     try {
       const blog = await blogService.create({title, author, url});
       setBlogs(blogs.concat(blog));
+
+      const text = {error: `a new blog ${title} is created by ${author}`}
+      setMessage({text, error: false})
+      setTimeout(() => {
+        setMessage(null);
+      }, 5000);
+
       setTitle("");
       setAuthor("");
       setUrl("");
@@ -58,10 +71,17 @@ const App = () => {
       console.log(err.message);
     }
   }
+  
+  const showMessage = () => {
+    let result = null;
+    result = message === null ? null : <Notification message={message} />
+    return result;
+  }
 
   const showBlogs = () => {
     return <div>
       <h2>blogs</h2>
+      {showMessage()}
       <p>{user.name} logged in <button
         onClick={() => {
           setUser(null);
@@ -89,6 +109,7 @@ const App = () => {
   const showLogin = () => (
       <>
         <h2>Login to Application</h2>
+        {showMessage()}
         <form onSubmit={handleLogin}>
           <div>
             username <input
