@@ -1,13 +1,17 @@
 import { useState, useEffect } from 'react';
-import Blog from './components/Blog';
+import Blog from './components/Blog/Blog';
 import blogService from './services/blogs';
 import loginService from "./services/login";
+import NewBlog from "./components/NewBlog/NewBlog";
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
   const [username, setUsernaem] = useState("");
   const [password, setPassword] = useState("");
   const [user, setUser] = useState(null);
+  const [title, setTitle] = useState("");
+  const [author, setAuthor] = useState("");
+  const [url, setUrl] = useState("");
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -20,6 +24,7 @@ const App = () => {
     if(user) {
       const parsed = JSON.parse(user);
       setUser(parsed);
+      blogService.setToken(parsed.token);
     }
   }, [])
 
@@ -31,11 +36,26 @@ const App = () => {
 
       window.localStorage.setItem("bloglistLoggedUser", JSON.stringify(user));
       setUser(user);
+      blogService.setToken(user.token);
       setUsernaem("");
       setPassword("");
     }
     catch(e) {
       console.log(e.response.data);
+    }
+  }
+
+  const creationHandler = async (e) => {
+    e.preventDefault();
+    try {
+      const blog = await blogService.create({title, author, url});
+      setBlogs(blogs.concat(blog));
+      setTitle("");
+      setAuthor("");
+      setUrl("");
+    }
+    catch(err) {
+      console.log(err.message);
     }
   }
 
@@ -51,6 +71,17 @@ const App = () => {
       {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />
       )}
+
+      <h2>create new</h2>
+      <NewBlog
+        title={title}
+        author={author}
+        url={url}
+        setTitle={setTitle}
+        setAuthor={setAuthor}
+        setUrl={setUrl}
+        creationHandler={creationHandler}
+      />
     </div>
 
   }

@@ -10,11 +10,16 @@ const tokenExtractor = (req, res, next) => {
 }
 
 const userExtractor = async (req, res, next) => {
-    const token = jwt.verify(req.token, process.env.SECRET);
-    const user = await User.findById(token.id);
-    req.user = user;
+    try {
+        const token = jwt.verify(req.token, process.env.SECRET);
+        const user = await User.findById(token.id);
+        req.user = user;
 
-    next();
+        next();
+    }
+    catch(e) {
+        next(e);
+    }
 }
 
 const errorHandler = (error, req, res, next) => {
@@ -28,7 +33,7 @@ const errorHandler = (error, req, res, next) => {
 
     if(error.name === "TokenExpiredError") return res.status(401).json({error: "token expired"});
 
-    next();
+    next(error);
 }
 
 const unknownEndpoint = (req, res) => res.status(400).json({error: "not found"})
