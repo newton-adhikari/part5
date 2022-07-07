@@ -1,0 +1,28 @@
+get http://localhost:3003/api/blogs
+
+###
+
+post http://localhost:3003/api/blogs
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyYzY0NGI0YjE0OWNiMTg3ODJlZDUxNCIsInVzZXJuYW1lIjoiYWRrIiwiaWF0IjoxNjU3MTY4NDkxfQ.dQEmuMy9FZgm9b0ciseJO-XyBG5VEuMFk8G4N5j_NdA
+content-type: application/json
+
+{
+    "title": "Hello world",
+    "author": "john nash",
+    "url": "NA",
+    "likes": 25
+}
+
+###
+
+delete http://localhost:3003/api/blogs/62c664457f2d06f2cb558cbe
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyYzY0NGI0YjE0OWNiMTg3ODJlZDUxNCIsInVzZXJuYW1lIjoiYWRrIiwiaWF0IjoxNjU3MTY4NDkxfQ.dQEmuMy9FZgm9b0ciseJO-XyBG5VEuMFk8G4N5j_NdA
+
+###
+
+put http://localhost:3003/api/blogs/5a422a851b54a676234d17f7
+content-type: application/json
+
+{
+    "likes": 200
+}
