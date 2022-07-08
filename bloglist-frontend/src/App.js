@@ -11,9 +11,6 @@ const App = () => {
   const [username, setUsernaem] = useState("");
   const [password, setPassword] = useState("");
   const [user, setUser] = useState(null);
-  const [title, setTitle] = useState("");
-  const [author, setAuthor] = useState("");
-  const [url, setUrl] = useState("");
   const [message, setMessage] = useState(null);
 
   useEffect(() => {
@@ -52,8 +49,7 @@ const App = () => {
     }
   }
 
-  const creationHandler = async (e) => {
-    e.preventDefault();
+  const creationHandler = async ({title, author, url}) => {
     try {
       const blog = await blogService.create({title, author, url});
       setBlogs(blogs.concat(blog));
@@ -63,13 +59,26 @@ const App = () => {
       setTimeout(() => {
         setMessage(null);
       }, 5000);
-
-      setTitle("");
-      setAuthor("");
-      setUrl("");
     }
     catch(err) {
       console.log(err.message);
+    }
+  }
+
+  const updateHandler = async (blog) => {
+    try {
+      const updated = await blogService
+        .modify(blog.id, {likes: blog.likes+1});
+      
+      setBlogs(blogs.map(b => b.id !== updated.id ? b : updated))
+    }
+    catch(err) {
+      const msg = err.response.data;
+      setMessage({text: msg, error: true});
+      setTimeout(() => {
+        setMessage(null);
+      }, 5000)
+
     }
   }
   
@@ -90,18 +99,12 @@ const App = () => {
         }}
       >logout</button></p>
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
+        <Blog key={blog.id} blog={blog} update={updateHandler} />
       )}
 
       <h2>create new</h2>
       <Toggleable label="create new blog">
         <NewBlog
-          title={title}
-          author={author}
-          url={url}
-          setTitle={setTitle}
-          setAuthor={setAuthor}
-          setUrl={setUrl}
           creationHandler={creationHandler}
         />
       </Toggleable>

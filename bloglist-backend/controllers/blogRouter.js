@@ -48,10 +48,17 @@ router.delete("/:id", userExtractor, async(req, res, next) => {
     }
 })
 
-router.put("/:id", async(req, res) => {
-    const updated = await Blog.findByIdAndUpdate(req.params.id, req.body, {new: true, runValidators: true});
-    if(!updated) res.status(400).json({error: "post not found"});
-    res.json(updated);
+router.put("/:id", async(req, res, next) => {
+    try {
+        // to update only like field we don't need to authenticate
+        
+        const updated = await Blog.findByIdAndUpdate(req.params.id, req.body, {new: true, runValidators: true});
+        if(!updated) res.status(400).json({error: "post not found"});
+        res.json(updated);
+    }
+    catch(e) {
+        next(e);
+    }
 })
 
 module.exports = router;

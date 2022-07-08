@@ -5,7 +5,16 @@ const NewBlog = ({creationHandler}) => {
     const [author, setAuthor] = useState("");
     const [url, setUrl] = useState("");
 
-    return <form onSubmit={creationHandler}>
+    const create = (ev) => {
+        ev.preventDefault();
+        creationHandler({title, author, url});
+
+        setTitle("");
+        setAuthor("");
+        setUrl("");
+    }
+
+    return <form onSubmit={create}>
         <div>title: <input
             type="text"
             name="title"
