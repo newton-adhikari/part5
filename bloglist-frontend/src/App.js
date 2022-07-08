@@ -137,7 +137,10 @@ const App = () => {
         </form>
       </>
     );
-
+    blogs.sort((a, b) => {
+      if(a.likes > b.likes) return 1;
+      return -1;
+    })
   return (
     <>
       {user === null && showLogin()}
