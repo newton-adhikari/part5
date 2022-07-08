@@ -1,7 +1,11 @@
-const NewBlog = ({title, author, url, setTitle, setAuthor, setUrl, creationHandler}) => {
-    return <form 
-        onSubmit={creationHandler}
-    >
+import { useState } from "react";
+
+const NewBlog = ({creationHandler}) => {
+    const [title, setTitle] = useState("");
+    const [author, setAuthor] = useState("");
+    const [url, setUrl] = useState("");
+
+    return <form onSubmit={creationHandler}>
         <div>title: <input
             type="text"
             name="title"
