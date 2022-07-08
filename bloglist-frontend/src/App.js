@@ -81,6 +81,20 @@ const App = () => {
 
     }
   }
+
+  const deleteBlog = async id => {
+    try {
+      const res = await blogService.remove(id);
+      setBlogs(blogs.filter(b => b.id !== id));
+    }
+    catch(err) {
+      const msg = err.response.data;
+      setMessage({text: msg, error: true});
+      setTimeout(() => {
+        setMessage(null);
+      }, 5000)
+    }
+  }
   
   const showMessage = () => {
     let result = null;
@@ -99,7 +113,13 @@ const App = () => {
         }}
       >logout</button></p>
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} update={updateHandler} />
+        <Blog 
+          key={blog.id} 
+          blog={blog} 
+          username={user.username} 
+          update={updateHandler}
+          del={deleteBlog}
+        />
       )}
 
       <h2>create new</h2>

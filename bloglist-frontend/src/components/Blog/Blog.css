@@ -4,3 +4,10 @@
     overflow: auto;
     margin: 5px 0;
 }
+
+.btn-del {
+    background: skyblue;
+    color: black;
+    border-radius: 5px;
+    margin: 0 4px;
+}
