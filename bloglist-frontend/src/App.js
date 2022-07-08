@@ -4,6 +4,7 @@ import blogService from './services/blogs';
 import loginService from "./services/login";
 import NewBlog from "./components/NewBlog/NewBlog";
 import Notification from "./components/Notification/Notification";
+import Toggleable from './components/Toggleable/Toggleable';
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
@@ -93,15 +94,17 @@ const App = () => {
       )}
 
       <h2>create new</h2>
-      <NewBlog
-        title={title}
-        author={author}
-        url={url}
-        setTitle={setTitle}
-        setAuthor={setAuthor}
-        setUrl={setUrl}
-        creationHandler={creationHandler}
-      />
+      <Toggleable label="create new blog">
+        <NewBlog
+          title={title}
+          author={author}
+          url={url}
+          setTitle={setTitle}
+          setAuthor={setAuthor}
+          setUrl={setUrl}
+          creationHandler={creationHandler}
+        />
+      </Toggleable>
     </div>
 
   }
