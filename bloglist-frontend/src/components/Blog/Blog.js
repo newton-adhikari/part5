@@ -1,4 +1,5 @@
 import { useState } from "react";
+import PropTypes from "prop-types";
 import "./Blog.css";
 
 const Blog = ({blog, update, username, del}) => {
@@ -38,6 +39,14 @@ const Blog = ({blog, update, username, del}) => {
           {blog.title} by {blog.author} <button onClick={toggleShown}>show</button>
         </div> 
   )
+}
+
+Blog.propTypes = {
+  blog: PropTypes.object.isRequired,
+  update: PropTypes.func.isRequired,
+  username: PropTypes.string.isRequired,
+  del: PropTypes.func.isRequired
+
 }
 
 export default Blog
