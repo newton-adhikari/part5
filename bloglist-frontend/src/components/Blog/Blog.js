@@ -16,10 +16,10 @@ const Blog = ({blog, update, username, del}) => {
 
   const showDetails = () => (
     <div className="blog">
-      {blog.title} <button onClick={toggleShown}>hide</button> <br />
-      {blog.url} <br />
-      likes {blog.likes} <button onClick={likeHandler}>like</button><br /> 
-      {blog.author} <br />
+      <p className=".title">{blog.title} <button onClick={toggleShown}>hide</button></p>
+      <p className=".url">{blog.url}</p>
+      <p className=".likes">likes {blog.likes} <button className="like-btn" onClick={() => update(blog)}>like</button></p>
+      <p className=".author">{blog.author}</p>
       {
         showDelete() ? <button 
         className="btn-del"
@@ -36,7 +36,7 @@ const Blog = ({blog, update, username, del}) => {
     shown
       ? showDetails()
       : <div className="blog">
-          {blog.title} by {blog.author} <button onClick={toggleShown}>show</button>
+          {blog.title} by {blog.author} <button className="show-btn" onClick={toggleShown}>show</button>
         </div> 
   )
 }
